@@ -23,6 +23,9 @@ GuiMenu::GuiMenu(Window* window) : GuiComponent(window), mMenu(window, "MAIN MEN
 	bool isFullUI = UIModeController::getInstance()->isUIModeFull();
 
 	if (isFullUI)
+		addEntry("LAUNCH KODI", 0x777777FF, true, [this] { openKodi(); });
+	
+	if (isFullUI)
 		addEntry("SCRAPER", 0x777777FF, true, [this] { openScraperSettings(); });
 
 	addEntry("SOUND SETTINGS", 0x777777FF, true, [this] { openSoundSettings(); });
@@ -46,6 +49,18 @@ GuiMenu::GuiMenu(Window* window) : GuiComponent(window), mMenu(window, "MAIN MEN
 	addVersionInfo();
 	setSize(mMenu.getSize());
 	setPosition((Renderer::getScreenWidth() - mSize.x()) / 2, Renderer::getScreenHeight() * 0.15f);
+}
+
+void GuiMenu::openKodi()
+{
+	Window* window = mWindow;
+	window->pushGui(new GuiMsgBox(window, "ARE YOU SURE YOU WANT TO LAUNCH KODI?", "YES",
+		[] {
+				if(quitES("/tmp/launchkodi") != 0)
+					LOG(LogWarning) << "Restart terminated with non-zero result!";
+			}, "NO", nullptr));
+	);
+
 }
 
 void GuiMenu::openScraperSettings()
