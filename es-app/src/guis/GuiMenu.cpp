@@ -56,11 +56,10 @@ void GuiMenu::openKodi()
 	Window* window = mWindow;
 	window->pushGui(new GuiMsgBox(window, "ARE YOU SURE YOU WANT TO LAUNCH KODI?", "YES",
 		[] {
-				if(quitES("/tmp/launchkodi") != 0)
-					LOG(LogWarning) << "Restart terminated with non-zero result!";
-			}, "NO", nullptr));
+		if(quitES("/tmp/launchkodi") != 0)
+			LOG(LogWarning) << "Restart terminated with non-zero result!";
+	}, "NO", nullptr)
 	);
-
 }
 
 void GuiMenu::openScraperSettings()
